@@ -36,12 +36,12 @@ class ClientAppProxyConnection : Connection {
 	}
 
 	/// Send an "Open" message to the SimpleTunnel server, to begin the process of establishing a flow of data in the SimpleTunnel protocol.
-	func open(_ extraProperties: [String: AnyObject]) {
+	func open(_ extraProperties: [String: Any]) {
 		guard let clientTunnel = tunnel as? ClientTunnel else {
 			// Close the NEAppProxyFlow.
 			let error: SimpleTunnelError = .badConnection
-			appProxyFlow.closeReadWithError(error as NSError)
-			appProxyFlow.closeWriteWithError(error as NSError)
+			appProxyFlow.closeReadWithError(error)
+			appProxyFlow.closeWriteWithError(error)
 			return
 		}
 
@@ -57,11 +57,11 @@ class ClientAppProxyConnection : Connection {
 	}
 
 	/// Handle the result of sending a data message to the SimpleTunnel server.
-	func handleSendResult(_ error: NSError?) {
+	func handleSendResult(_ error: Error?) {
 	}
 
 	/// Handle errors that occur on the connection.
-	func handleErrorCondition(_ flowError: NEAppProxyErrorDomain? = nil, notifyServer: Bool = true) {
+    func handleErrorCondition(_ flowError: NEAppProxyFlowError.Code? = nil, notifyServer: Bool = true) {
 
 		guard !isClosedCompletely else { return }
 
@@ -71,7 +71,7 @@ class ClientAppProxyConnection : Connection {
 	}
 
 	/// Send a "Data" message to the SimpleTunnel server.
-	func sendDataMessage(_ data: Data, extraProperties: [String: AnyObject] = [:]) {
+	func sendDataMessage(_ data: Data, extraProperties: [String: Any] = [:]) {
 		queue.async {
 
 			guard let clientTunnel = self.tunnel as? ClientTunnel else { return }
@@ -80,7 +80,7 @@ class ClientAppProxyConnection : Connection {
 			self.queue.suspend()
 
 			var dataProperties = extraProperties
-			dataProperties[TunnelMessageKey.Data.rawValue] = data as AnyObject?
+			dataProperties[TunnelMessageKey.Data.rawValue] = data
 
 			let properties = createMessagePropertiesForConnection(self.identifier, commandType: .data, extraProperties:dataProperties)
 
@@ -98,7 +98,7 @@ class ClientAppProxyConnection : Connection {
 	// MARK: Connection
 
 	/// Handle the "Open Completed" message received from the SimpleTunnel server for this connection.
-	override func handleOpenCompleted(_ resultCode: TunnelConnectionOpenResult, properties: [NSObject: AnyObject]) {
+	override func handleOpenCompleted(_ resultCode: TunnelConnectionOpenResult, properties: [String: Any]) {
 		guard resultCode == .success else {
 			simpleTunnelLog("Failed to open \(identifier), result = \(resultCode)")
 			handleErrorCondition(.peerReset, notifyServer: false)
@@ -113,7 +113,7 @@ class ClientAppProxyConnection : Connection {
 
 		// Now that the SimpleTunnel connection is open, indicate that we are ready to handle data on the NEAppProxyFlow.
 		appProxyFlow.open(withLocalEndpoint: localAddress) { error in
-			self.handleSendResult(error as NSError?)
+			self.handleSendResult(error)
 		}
 	}
 
@@ -121,10 +121,10 @@ class ClientAppProxyConnection : Connection {
 		self.closeConnection(direction, flowError: nil)
 	}
 
-	func closeConnection(_ direction: TunnelConnectionCloseDirection, flowError: NEAppProxyErrorDomain?) {
+	func closeConnection(_ direction: TunnelConnectionCloseDirection, flowError: NEAppProxyFlowError.Code?) {
 		super.closeConnection(direction)
 
-		var error: NSError?
+		var error: Error?
 		if let ferror = flowError {
 			error = NSError(domain: NEAppProxyErrorDomain, code: ferror.rawValue, userInfo: nil)
 		}
@@ -159,15 +159,15 @@ class ClientAppProxyTCPConnection : ClientAppProxyConnection {
 	/// Send an "Open" message to the SimpleTunnel server, to begin the process of establishing a flow of data in the SimpleTunnel protocol.
 	override func open() {
 		open([
-				TunnelMessageKey.TunnelType.rawValue: TunnelLayer.app.rawValue as AnyObject,
-				TunnelMessageKey.Host.rawValue: (TCPFlow.remoteEndpoint as! NWHostEndpoint).hostname as AnyObject,
-				TunnelMessageKey.Port.rawValue: Int((TCPFlow.remoteEndpoint as! NWHostEndpoint).port)! as AnyObject,
-				TunnelMessageKey.AppProxyFlowType.rawValue: AppProxyFlowKind.tcp.rawValue as AnyObject
+				TunnelMessageKey.TunnelType.rawValue: TunnelLayer.app.rawValue,
+				TunnelMessageKey.Host.rawValue: (TCPFlow.remoteEndpoint as! NWHostEndpoint).hostname,
+				TunnelMessageKey.Port.rawValue: Int((TCPFlow.remoteEndpoint as! NWHostEndpoint).port)!,
+				TunnelMessageKey.AppProxyFlowType.rawValue: AppProxyFlowKind.tcp.rawValue
 			])
 	}
 
 	/// Handle the result of sending a "Data" message to the SimpleTunnel server.
-	override func handleSendResult(_ error: NSError?) {
+	override func handleSendResult(_ error: Error?) {
 		if let sendError = error {
 			simpleTunnelLog("Failed to send Data Message to the Tunnel Server. error = \(sendError)")
 			handleErrorCondition(.hostUnreachable)
@@ -177,7 +177,7 @@ class ClientAppProxyTCPConnection : ClientAppProxyConnection {
 		// Read another chunk of data from the source application.
 		TCPFlow.readData { data, readError in
 			guard let readData = data , readError == nil else {
-				simpleTunnelLog("Failed to read data from the TCP flow. error = \(readError)")
+                simpleTunnelLog("Failed to read data from the TCP flow. error = \(String(describing: readError))")
 				self.handleErrorCondition(.peerReset)
 				return
 			}
@@ -229,13 +229,13 @@ class ClientAppProxyUDPConnection : ClientAppProxyConnection {
 	/// Send an "Open" message to the SimpleTunnel server, to begin the process of establishing a flow of data in the SimpleTunnel protocol.
 	override func open() {
 		open([
-				TunnelMessageKey.TunnelType.rawValue: TunnelLayer.app.rawValue as AnyObject,
-				TunnelMessageKey.AppProxyFlowType.rawValue: AppProxyFlowKind.udp.rawValue as AnyObject
+				TunnelMessageKey.TunnelType.rawValue: TunnelLayer.app.rawValue,
+				TunnelMessageKey.AppProxyFlowType.rawValue: AppProxyFlowKind.udp.rawValue
 			])
 	}
 
 	/// Handle the result of sending a "Data" message to the SimpleTunnel server.
-	override func handleSendResult(_ error: NSError?) {
+	override func handleSendResult(_ error: Error?) {
 
 		if let sendError = error {
 			simpleTunnelLog("Failed to send message to Tunnel Server. error = \(sendError)")
@@ -257,7 +257,7 @@ class ClientAppProxyUDPConnection : ClientAppProxyConnection {
 				let readEndpoints = remoteEndPoints
 				, readError == nil else
 			{
-				simpleTunnelLog("Failed to read data from the UDP flow. error = \(readError)")
+                simpleTunnelLog("Failed to read data from the UDP flow. error = \(String(describing: readError))")
 				self.handleErrorCondition(.peerReset)
 				return
 			}
@@ -278,8 +278,8 @@ class ClientAppProxyUDPConnection : ClientAppProxyConnection {
 
 				// Send a data message to the SimpleTunnel server.
 				self.sendDataMessage(datagram, extraProperties:[
-						TunnelMessageKey.Host.rawValue: endpoint.hostname as AnyObject,
-						TunnelMessageKey.Port.rawValue: Int(endpoint.port)! as AnyObject
+						TunnelMessageKey.Host.rawValue: endpoint.hostname,
+						TunnelMessageKey.Port.rawValue: Int(endpoint.port)!
 					])
 			}
 		}

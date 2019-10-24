@@ -16,15 +16,15 @@ class ControlExtension : NEFilterControlProvider {
 	// MARK: Properties
 
 	/// The default rules, in the event that 
-	let defaultRules: [String: [String: AnyObject]] = [
+	let defaultRules: [String: [String: Any]] = [
 		"www.apple.com" : [
-			"kRule" : FilterRuleAction.block.rawValue as AnyObject,
-			"kRemediationKey" : "Remediate1" as AnyObject
+			"kRule" : FilterRuleAction.block.rawValue,
+			"kRemediationKey" : "Remediate1"
 		]
 	]
 
 	/// An integer to use as the context for key-value observing.
-	var observerContext = 0
+	static var observerContext = 0
 
 	// MARK: Interface
 
@@ -64,14 +64,14 @@ class ControlExtension : NEFilterControlProvider {
 		FilterUtilities.defaults?.setValue(defaultRules, forKey: "rules")
 		FilterUtilities.fetchRulesFromServer(self.filterConfiguration.serverAddress)
 
-		self.addObserver(self, forKeyPath: "filterConfiguration", options: [.initial, .new], context: &observerContext)
+        self.addObserver(self, forKeyPath: "filterConfiguration", options: [.initial, .new], context: &ControlExtension.observerContext)
 	}
 
 	// MARK: NSObject
 
 	/// Observe changes to the configuration.
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		if keyPath == "filterConfiguration" && context == &observerContext {
+        if context == &ControlExtension.observerContext, keyPath == "filterConfiguration" {
 			simpleTunnelLog("configuration changed")
 			updateFromConfiguration()
 		} else {

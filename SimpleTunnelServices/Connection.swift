@@ -73,7 +73,7 @@ open class Connection: NSObject {
 
 	// MARK: Initializers
 
-    public init(connectionIdentifier: Int, parentTunnel: Tunnel) {
+	public init(connectionIdentifier: Int, parentTunnel: Tunnel) {
 		tunnel = parentTunnel
 		identifier = connectionIdentifier
 		isExclusiveTunnel = false
@@ -85,7 +85,7 @@ open class Connection: NSObject {
 
 	}
 
-    public init(connectionIdentifier: Int) {
+	public init(connectionIdentifier: Int) {
 		isExclusiveTunnel = true
 		identifier = connectionIdentifier
 	}
@@ -146,6 +146,6 @@ open class Connection: NSObject {
 	}
 
 	/// Handle the "open completed" message sent by the SimpleTunnel server.
-	open func handleOpenCompleted(_ resultCode: TunnelConnectionOpenResult, properties: [NSObject: AnyObject]) {
+	open func handleOpenCompleted(_ resultCode: TunnelConnectionOpenResult, properties: [String: Any]) {
 	}
 }

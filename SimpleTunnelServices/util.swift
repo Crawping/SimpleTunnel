@@ -191,41 +191,41 @@ func writeData(_ data: Data, toStream stream: OutputStream, startingAtOffset off
 }
 
 /// Create a SimpleTunnel protocol message dictionary.
-public func createMessagePropertiesForConnection(_ connectionIdentifier: Int, commandType: TunnelCommand, extraProperties: [String: AnyObject] = [:]) -> [String: AnyObject] {
+public func createMessagePropertiesForConnection(_ connectionIdentifier: Int, commandType: TunnelCommand, extraProperties: [String: Any] = [:]) -> [String: Any] {
 	// Start out with the "extra properties" that the caller specified.
 	var properties = extraProperties
 
 	// Add in the standard properties common to all messages.
-	properties[TunnelMessageKey.Identifier.rawValue] = connectionIdentifier as AnyObject?
-	properties[TunnelMessageKey.Command.rawValue] = commandType.rawValue as AnyObject?
+	properties[TunnelMessageKey.Identifier.rawValue] = connectionIdentifier
+	properties[TunnelMessageKey.Command.rawValue] = commandType.rawValue
 	
 	return properties
 }
 
 /// Keys in the tunnel server configuration plist.
 public enum SettingsKey: String {
-	case IPv4 = "IPv4"
-	case DNS = "DNS"
-	case Proxies = "Proxies"
-	case Pool = "Pool"
-	case StartAddress = "StartAddress"
-	case EndAddress = "EndAddress"
-	case Servers = "Servers"
-	case SearchDomains = "SearchDomains"
-	case Address = "Address"
-	case Netmask = "Netmask"
-	case Routes = "Routes"
+	case IPv4
+	case DNS
+	case Proxies
+	case Pool
+	case StartAddress
+	case EndAddress
+	case Servers
+	case SearchDomains
+	case Address
+	case Netmask
+	case Routes
 }
 
 /// Get a value from a plist given a list of keys.
-public func getValueFromPlist(_ plist: [NSObject: AnyObject], keyArray: [SettingsKey]) -> AnyObject? {
+public func getValueFromPlist(_ plist: [String: Any], keyArray: [SettingsKey]) -> Any? {
 	var subPlist = plist
 	for (index, key) in keyArray.enumerated() {
 		if index == keyArray.count - 1 {
-			return subPlist[key.rawValue as NSString]
+			return subPlist[key.rawValue]
 		}
-		else if let subSubPlist = subPlist[key.rawValue as NSString] as? [NSObject: AnyObject] {
-			subPlist = subSubPlist
+		else if let subSubPlist = subPlist[key.rawValue] {
+            subPlist = subSubPlist as! [String : Any]
 		}
 		else {
 			break

@@ -42,17 +42,17 @@ open class FilterUtilities {
 	// MARK: Properties
 
 	/// A reference to the SimpleTunnel user defaults.
-    public static let defaults = UserDefaults(suiteName: "group.com.example.apple-samplecode.SimpleTunnel")
+    public static let defaults = UserDefaults(suiteName: "group.me.lvv.apple-samplecode.SimpleTunnel")
 
 	// MARK: Initializers
 
 	/// Get rule parameters for a flow from the SimpleTunnel user defaults.
-	open class func getRule(_ flow: NEFilterFlow) -> (FilterRuleAction, String, [String: AnyObject]) {
+	open class func getRule(_ flow: NEFilterFlow) -> (FilterRuleAction, String, [String: Any]) {
 		let hostname = FilterUtilities.getFlowHostname(flow)
 
 		guard !hostname.isEmpty else { return (.allow, hostname, [:]) }
 
-		guard let hostNameRule = (defaults?.object(forKey: "rules") as AnyObject).object(forKey: hostname) as? [String: AnyObject] else {
+		guard let hostNameRule = (defaults?.object(forKey: "rules") as AnyObject).object(forKey: hostname) as? [String: Any] else {
 			simpleTunnelLog("\(hostname) is set for NO RULES")
 			return (.allow, hostname, [:])
 		}
@@ -79,7 +79,7 @@ open class FilterUtilities {
 		simpleTunnelLog("fetch rules called")
 
 		guard serverAddress != nil else { return }
-		simpleTunnelLog("Fetching rules from \(serverAddress)")
+        simpleTunnelLog("Fetching rules from \(String(describing: serverAddress))")
 
 		guard let infoURL = URL(string: "http://\(serverAddress!)/rules/") else { return }
 		simpleTunnelLog("Rules url is \(infoURL)")
@@ -95,7 +95,7 @@ open class FilterUtilities {
 
 		let contentArray = content.components(separatedBy: "<br/>")
 		simpleTunnelLog("Content array is \(contentArray)")
-		var urlRules = [String: [String: AnyObject]]()
+		var urlRules = [String: [String: Any]]()
 
 		for rule in contentArray {
 			if rule.isEmpty {
@@ -128,10 +128,10 @@ open class FilterUtilities {
 
 
 			urlRules[urlString] = [
-				"kRule" : actionString as AnyObject,
-				"kRedirectKey" : redirectKey as AnyObject,
-				"kRemediateKey" : remediateKey as AnyObject,
-				"kRemediateButtonKey" : remediateButtonKey as AnyObject,
+				"kRule" : actionString,
+				"kRedirectKey" : redirectKey,
+				"kRemediateKey" : remediateKey,
+				"kRemediateButtonKey" : remediateButtonKey,
 			]
 		}
 		defaults?.setValue(urlRules, forKey:"rules")
