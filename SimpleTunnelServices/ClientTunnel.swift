@@ -19,6 +19,8 @@ extension NWTCPConnectionState: CustomStringConvertible {
 			case .disconnected: return "Disconnected"
 			case .invalid: return "Invalid"
 			case .waiting: return "Waiting"
+        @unknown default:
+            fatalError()
         }
 	}
 }

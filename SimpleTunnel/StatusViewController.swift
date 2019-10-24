@@ -22,6 +22,8 @@ extension NEVPNStatus: CustomStringConvertible {
         	case .connecting: return "Connecting"
         	case .disconnecting: return "Disconnecting"
         	case .reasserting: return "Reconnecting"
+        default:
+            fatalError()
         }
     }
 }
@@ -57,6 +59,8 @@ class StatusViewController: UITableViewController {
 
 		// Register to be notified of changes in the status.
 		NotificationCenter.default.addObserver(forName: NSNotification.Name.NEVPNStatusDidChange, object: targetManager.connection, queue: OperationQueue.main, using: { notification in
+            let tunnelProviderSession = notification.object as? NETunnelProviderSession
+            simpleTunnelLog("NEVPNStatusDidChange: \(tunnelProviderSession?.status)")
 			self.statusLabel.text = self.targetManager.connection.status.description
 			self.startStopToggle.isOn = (self.targetManager.connection.status != .disconnected && self.targetManager.connection.status != .disconnecting && self.targetManager.connection.status != .invalid)
 		})
@@ -65,9 +69,7 @@ class StatusViewController: UITableViewController {
 		startStopToggle.isEnabled = enabledSwitch.isOn
 
 		// Send a simple IPC message to the provider, handle the response.
-		if let session = targetManager.connection as? NETunnelProviderSession,
-			let message = "Hello Provider".data(using: String.Encoding.utf8)
-			, targetManager.connection.status != .invalid
+		if let session = targetManager.connection as? NETunnelProviderSession, let message = "你好 Tunnel Provider extension 我是 SimpleTunnel App".data(using: String.Encoding.utf8) , targetManager.connection.status != .invalid
 		{
 			do {
 				try session.sendProviderMessage(message) { response in
@@ -94,19 +96,29 @@ class StatusViewController: UITableViewController {
 
 	/// Handle the user toggling the "enabled" switch.
 	@IBAction func enabledToggled(_ sender: AnyObject) {
-		targetManager.isEnabled = enabledSwitch.isOn
-		targetManager.saveToPreferences { error in
-			guard error == nil else {
-				self.enabledSwitch.isOn = self.targetManager.isEnabled
-				self.startStopToggle.isEnabled = self.enabledSwitch.isOn
-				return
-			}
-			
-			self.targetManager.loadFromPreferences { error in
-				self.enabledSwitch.isOn = self.targetManager.isEnabled
-				self.startStopToggle.isEnabled = self.enabledSwitch.isOn
-			}
-		}
+        self.targetManager.loadFromPreferences { error in
+            if let error = error {
+                simpleTunnelLog("loadFromPreferences error: \(error)")
+            }
+            self.targetManager.isEnabled = self.enabledSwitch.isOn
+            self.enabledSwitch.isOn = self.targetManager.isEnabled
+            self.startStopToggle.isEnabled = self.enabledSwitch.isOn
+            
+            self.targetManager.saveToPreferences { error in
+                guard error == nil else {
+                    if let error = error {
+                        simpleTunnelLog("saveToPreferences error: \(error)")
+                    }
+                    self.enabledSwitch.isOn = self.targetManager.isEnabled
+                    self.startStopToggle.isEnabled = self.enabledSwitch.isOn
+                    return
+                }
+                
+                
+            }
+        }
+        
+		
 	}
 
 	/// Handle the user toggling the "VPN" switch.

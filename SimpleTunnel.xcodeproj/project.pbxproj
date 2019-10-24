@@ -62,6 +62,11 @@
 		C4E003B01B1A9E45001A01C0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B07CCB451A8940E600A4F1E5 /* LaunchScreen.xib */; };
 		C4F7B44B1B3B5DD40033A7E4 /* AppProxyProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 442B69421B06724900382B6D /* AppProxyProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C4F7B44E1B3B5F400033A7E4 /* PacketTunnel.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B07CCB6D1A89414500A4F1E5 /* PacketTunnel.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FC21D1C72361407B00203CAE /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC21D1C62361407B00203CAE /* NetworkExtension.framework */; };
+		FC21D1C82361409C00203CAE /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC21D1C62361407B00203CAE /* NetworkExtension.framework */; };
+		FC21D1C92361409F00203CAE /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC21D1C62361407B00203CAE /* NetworkExtension.framework */; };
+		FC21D1CA236140A200203CAE /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC21D1C62361407B00203CAE /* NetworkExtension.framework */; };
+		FC21D1CB236140B800203CAE /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC21D1C62361407B00203CAE /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,6 +235,7 @@
 		C4BB8C441AD4985800B58141 /* StatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
 		C4C273921AD5C50000214C25 /* ContentFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFilterController.swift; sourceTree = "<group>"; };
 		C4CD4E6C1B050BE000939546 /* SimpleTunnel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimpleTunnel.entitlements; sourceTree = "<group>"; };
+		FC21D1C62361407B00203CAE /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73784A52233F6CC30039AC25 /* SimpleTunnelServices.framework in Frameworks */,
+				FC21D1CA236140A200203CAE /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73784A50233F6CB90039AC25 /* SimpleTunnelServices.framework in Frameworks */,
+				FC21D1C82361409C00203CAE /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73784A51233F6CBE0039AC25 /* SimpleTunnelServices.framework in Frameworks */,
+				FC21D1C92361409F00203CAE /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73784A4E233F6CA10039AC25 /* SimpleTunnelServices.framework in Frameworks */,
+				FC21D1CB236140B800203CAE /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73784A4F233F6CAC0039AC25 /* SimpleTunnelServices.framework in Frameworks */,
+				FC21D1C72361407B00203CAE /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +343,7 @@
 		73784A4D233F6CA10039AC25 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FC21D1C62361407B00203CAE /* NetworkExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -900,7 +912,7 @@
 				DEVELOPMENT_TEAM = 3HT49A2VBK;
 				INFOPLIST_FILE = AppProxy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.AppProxy;
 				PRODUCT_MODULE_NAME = AppProxy;
 				PRODUCT_NAME = AppProxyProvider;
 				SKIP_INSTALL = YES;
@@ -915,7 +927,7 @@
 				DEVELOPMENT_TEAM = 3HT49A2VBK;
 				INFOPLIST_FILE = AppProxy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.AppProxy;
 				PRODUCT_MODULE_NAME = AppProxy;
 				PRODUCT_NAME = AppProxyProvider;
 				SKIP_INSTALL = YES;
@@ -933,7 +945,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = FilterDataProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.FilterDataProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -949,7 +961,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = FilterDataProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.FilterDataProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -966,7 +978,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = FilterControlProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.FilterControlProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -982,7 +994,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = FilterControlProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.FilterControlProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -991,7 +1003,7 @@
 		B01A16AD1A8A616000BC9EFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1005,7 +1017,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "-fapplication-extension";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.TunnelServices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -1019,7 +1031,7 @@
 		B01A16AE1A8A616000BC9EFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1033,7 +1045,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "-fapplication-extension";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.TunnelServices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -1094,13 +1106,13 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
-				PLUGIN_BUNDLE_ID = "com.apple.VPN-Development1.vpnplugin";
+				PLUGIN_BUNDLE_ID = me.jkyin.641a;
 				PLUGIN_NAME = AppTunnel;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale";
+				VALID_ARCHS = "arm64 xscale arm64e";
 			};
 			name = Debug;
 		};
@@ -1146,14 +1158,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PLUGIN_BUNDLE_ID = "com.apple.VPN-Development1.vpnplugin";
+				PLUGIN_BUNDLE_ID = me.jkyin.641a;
 				PLUGIN_NAME = AppTunnel;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale";
+				VALID_ARCHS = "arm64 xscale arm64e";
 			};
 			name = Release;
 		};
@@ -1177,7 +1189,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale x86_64";
 			};
 			name = Debug;
 		};
@@ -1196,7 +1207,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				VALID_ARCHS = "arm64 armv4t armv5 armv6 armv6m armv7 armv7em armv7f armv7m armv7s xscale x86_64";
 			};
 			name = Release;
 		};
@@ -1208,7 +1218,7 @@
 				DEVELOPMENT_TEAM = 3HT49A2VBK;
 				INFOPLIST_FILE = PacketTunnel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -1222,7 +1232,7 @@
 				DEVELOPMENT_TEAM = 3HT49A2VBK;
 				INFOPLIST_FILE = PacketTunnel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -1236,7 +1246,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3HT49A2VBK;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.tunnelServer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -1255,7 +1265,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3HT49A2VBK;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a;
+				PRODUCT_BUNDLE_IDENTIFIER = me.jkyin.641a.tunnelServer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;

@@ -62,7 +62,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
 
 		simpleTunnelLog("Got a message from the app: \(messageString)")
 
-		let responseData = "Hello app".data(using: String.Encoding.utf8)
+		let responseData = "你好 SimpleTunnel App 我是 PacketTunnelProvider.".data(using: String.Encoding.utf8)
 		completionHandler?(responseData)
 	}
 
