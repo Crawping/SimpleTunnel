@@ -53,6 +53,8 @@ open class ClientTunnel: Tunnel {
 			return .badConfiguration
 		}
 
+        print("协议的服务器地址： \(serverAddress)")
+
 		let endpoint: NWEndpoint
 
 		if let colonRange = serverAddress.rangeOfCharacter(from: CharacterSet(charactersIn: ":"), options: [], range: nil) {
@@ -95,7 +97,7 @@ open class ClientTunnel: Tunnel {
 		}
 
 		// First, read the total length of the packet.
-		targetConnection.readMinimumLength(MemoryLayout<UInt32>.size, maximumLength: MemoryLayout<UInt32>.size) { data, error in
+		targetConnection.readMinimumLength(MemoryLayout<UInt32>.size, maximumLength: MemoryLayout<UInt64>.size) { data, error in
 			if let readError = error {
 				simpleTunnelLog("Got an error on the tunnel connection: \(readError)")
 				self.closeTunnelWithError(readError)

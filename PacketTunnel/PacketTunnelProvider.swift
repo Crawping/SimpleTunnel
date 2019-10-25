@@ -35,8 +35,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
 
 		if let error = newTunnel.startTunnel(self) {
 			completionHandler(error)
-		}
-		else {
+		} else {
 			// Save the completion handler for when the tunnel is fully established.
 			pendingStartCompletion = completionHandler
 			tunnel = newTunnel

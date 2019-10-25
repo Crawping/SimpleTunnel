@@ -37,8 +37,7 @@ if !ServerTunnel.initializeWithConfigurationFile(path: configurationPath) {
 
 if let portNumber = Int(portString)  {
     networkService = ServerTunnel.startListeningOnPort(port: Int32(portNumber))
-}
-else {
+} else {
 	print("Invalid port: \(portString)")
 	exit(1)
 }

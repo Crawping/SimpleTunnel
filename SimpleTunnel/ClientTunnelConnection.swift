@@ -58,7 +58,9 @@ class ClientTunnelConnection: Connection {
 	}
 
 	/// Handle packets coming from the packet flow.
+    /// packetFlow.readPackets 读取虚拟网卡转发来的数据包。在他的回调里可以进行加密等操作分装为新的数据包流量
 	func handlePackets(_ packets: [Data], protocols: [NSNumber]) {
+        print("收到虚拟网卡转发来的数据包")
 		guard let clientTunnel = tunnel as? ClientTunnel else { return }
 
 		let properties = createMessagePropertiesForConnection(identifier, commandType: .packets, extraProperties:[

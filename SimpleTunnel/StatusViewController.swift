@@ -77,11 +77,11 @@ class StatusViewController: UITableViewController {
 						let responseString = NSString(data: response!, encoding: String.Encoding.utf8.rawValue)
                         simpleTunnelLog("Received response from the provider: \(String(describing: responseString))")
 					} else {
-						simpleTunnelLog("Got a nil response from the provider")
+						simpleTunnelLog("PacketTunnel Provider 无响应")
 					}
 				}
 			} catch {
-				simpleTunnelLog("Failed to send a message to the provider")
+				simpleTunnelLog("Failed to send a message to the provider \(error)")
 			}
 		}
 	}
