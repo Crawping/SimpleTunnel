@@ -53,8 +53,6 @@ open class ClientTunnel: Tunnel {
 			return .badConfiguration
 		}
 
-        print("协议的服务器地址： \(serverAddress)")
-
 		let endpoint: NWEndpoint
 
 		if let colonRange = serverAddress.rangeOfCharacter(from: CharacterSet(charactersIn: ":"), options: [], range: nil) {
@@ -95,9 +93,9 @@ open class ClientTunnel: Tunnel {
 			closeTunnelWithError(SimpleTunnelError.badConnection)
 			return
 		}
-
+        
 		// First, read the total length of the packet.
-		targetConnection.readMinimumLength(MemoryLayout<UInt32>.size, maximumLength: MemoryLayout<UInt64>.size) { data, error in
+		targetConnection.readMinimumLength(0, maximumLength: MemoryLayout<UInt64>.size) { data, error in
 			if let readError = error {
 				simpleTunnelLog("Got an error on the tunnel connection: \(readError)")
 				self.closeTunnelWithError(readError)
@@ -106,22 +104,22 @@ open class ClientTunnel: Tunnel {
 
 			let lengthData = data
 
-            guard lengthData!.count == MemoryLayout<UInt32>.size else {
-                simpleTunnelLog("Length data length (\(lengthData!.count)) != sizeof(UInt32) (\(MemoryLayout<UInt32>.size)")
-				self.closeTunnelWithError(SimpleTunnelError.internalError)
-				return
-			}
+//            guard lengthData!.count == MemoryLayout<Int>.size else {
+//                simpleTunnelLog("Length data length (\(lengthData!.count)) != sizeof(Int) (\(MemoryLayout<Int>.size)")
+//				self.closeTunnelWithError(SimpleTunnelError.internalError)
+//				return
+//			}
 
-			var totalLength: UInt32 = 0
-            (lengthData! as NSData).getBytes(&totalLength, length: MemoryLayout<UInt32>.size)
+			var totalLength: Int = 0
+            (lengthData! as NSData).getBytes(&totalLength, length: MemoryLayout<Int>.size)
 
-			if totalLength > UInt32(Tunnel.maximumMessageSize) {
+			if totalLength > Int(Tunnel.maximumMessageSize) {
 				simpleTunnelLog("Got a length that is too big: \(totalLength)")
 				self.closeTunnelWithError(SimpleTunnelError.internalError)
 				return
 			}
 
-			totalLength -= UInt32(MemoryLayout<UInt32>.size)
+			totalLength -= Int(MemoryLayout<Int>.size)
 
 			// Second, read the packet payload.
 			targetConnection.readMinimumLength(Int(totalLength), maximumLength: Int(totalLength)) { data, error in
@@ -164,32 +162,34 @@ open class ClientTunnel: Tunnel {
 			super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
 			return
 		}
-
-		simpleTunnelLog("Tunnel connection state changed to \(connection!.state)")
-
-		switch connection!.state {
-			case .connected:
-				if let remoteAddress = self.connection!.remoteAddress as? NWHostEndpoint {
-					remoteHost = remoteAddress.hostname
-				}
-
-				// Start reading messages from the tunnel connection.
-				readNextPacket()
-
-				// Let the delegate know that the tunnel is open
-				delegate?.tunnelDidOpen(self)
-
-			case .disconnected:
-				closeTunnelWithError(connection!.error)
-
-			case .cancelled:
-				connection!.removeObserver(self, forKeyPath:"state", context:&connection)
-				connection = nil
-				delegate?.tunnelDidClose(self)
-
-			default:
-				break
-		}
+        
+        
+        switch connection!.state {
+        case .connected:
+            if let remoteAddress = self.connection!.remoteAddress as? NWHostEndpoint {
+                remoteHost = remoteAddress.hostname
+            }
+            
+            // Start reading messages from the tunnel connection.
+            readNextPacket()
+            
+            // Let the delegate know that the tunnel is open
+            delegate?.tunnelDidOpen(self)
+            
+        case .disconnected:
+            closeTunnelWithError(connection!.error)
+            
+        case .waiting:
+            let error = connection?.error
+            
+        case .cancelled:
+            connection!.removeObserver(self, forKeyPath:"state", context:&connection)
+            connection = nil
+            delegate?.tunnelDidClose(self)
+            
+        default:
+            break
+        }
 	}
 
 	// MARK: Tunnel

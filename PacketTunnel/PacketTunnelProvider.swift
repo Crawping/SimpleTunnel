@@ -33,6 +33,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelDelegate, ClientTunnel
 		let newTunnel = ClientTunnel()
 		newTunnel.delegate = self
 
+        print("协议的服务器地址： \(String(describing: protocolConfiguration.serverAddress))")
+
 		if let error = newTunnel.startTunnel(self) {
 			completionHandler(error)
 		} else {

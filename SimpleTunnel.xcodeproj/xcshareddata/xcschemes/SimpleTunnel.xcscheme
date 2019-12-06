@@ -50,6 +50,16 @@
             ReferencedContainer = "container:SimpleTunnel.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "666"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "/Users/jkyin/Workspace/Personal/SimpleTunnelCustomizedNetworkingUsingtheNetworkExtensionFramework/tunnel_server/config.plist"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
